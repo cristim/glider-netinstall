@@ -1,0 +1,35 @@
+# This file is maintained by puppet, your changes will be overwritten!
+
+<% main_options.each do |option| -%>
+<%= option %>;
+<% end -%>   
+option domain-name-servers <% dns.each do |ns| -%><%= ns %><% end -%>;
+
+# define an empty subnet so our DHCP server will start when no other subnets are defined
+subnet <%= ip %> netmask 255.255.255.255{}
+
+<% f = File.new(static_nodes_file, "r")
+while (line = f.gets)
+	line=line.gsub(/\#.*$/, "")
+	
+	a = line.split(" ") 
+	next if a == []
+	
+	if a.length != 3 %> The hosts file is in wrong format  
+		<% f.close
+		Process.exit
+        end %>
+host <%= a[0] %>{fixed-address <%= a[1] %>; hardware ethernet <%= a[2] %>;}
+<% end
+f.close -%>
+
+
+<% subnet.each_with_index do |s, i| %>
+subnet <% if subnet.is_a?(Array) then %><%= subnet[i] %><% else %><%= subnet %><% end %> netmask <% if netmask.is_a?(Array) then %><%= netmask[i] %><% else %><%= netmask %><% end %>
+{
+	option routers <% if gw.is_a?(Array) then %><%= gw[i] %><% else	%><%= gw %><% end -%>;
+	next-server <%= tftp %>;
+	filename "/pxelinux.0";
+}
+
+<% end -%>   

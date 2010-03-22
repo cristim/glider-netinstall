@@ -1,0 +1,7 @@
+prompt 0
+default default_entry
+timeout 10
+
+label default_entry
+kernel vmlinuz
+append initrd=initrd.img ks=<%= kickstart_url %> ip=dhcp
