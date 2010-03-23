@@ -1,0 +1,39 @@
+import "glider-netinstall"
+
+node "glider.example.com"{
+
+# Cobbler server configuration
+#
+# ip - an IP address on this machine accessible to the managed hosts
+#
+# Any of the subnet, netmask and gw fields can be arrays or single values.
+# If there's an array, then we assume {subnet[i], netmask[i], gw[i], static_nodes_file[i]} 
+# is a tuple that describes the config for a single subnet. Since the netmasks can be the 
+# same on all the subnets, sometimes we don't really need this field to be an array too
+#
+# The dns field can be an array of DNS servers (unrelated to those above), or a single value
+
+# static_nodes_file is a path to a file that contains "hostname IP MAC" tuples, one for each 
+# managed node. You must create and maintain that file yourself
+#
+# os_mirror_base_url is the rsync URL to the root of your closest CentOS mirror
+# It also supports a local directory instead, where you can for example loop-mount a DVD image
+#
+# The root_password_hash field contains an encrypted form of the root password that will be 
+# set on the newly-installed nodes. You can change it after install without being overwritten.
+
+	cobbler_server{cobbler:
+		ip => "192.168.56.101",
+		subnet => "192.168.56.0",
+		netmask => "255.255.255.0",     
+		gw => "192.168.56.101",
+		dns => "193.226.5.151",
+		static_nodes_file => "/etc/puppet/manifests/nodes.list", 
+		os_mirror_base_url => "rsync://ftp.roedu.net/mirrors/centos.org", 
+		root_password_hash =>'$1$7xtoAlN.$6ijtkhzu4JbGRBPIiB7zc0' 
+	}
+
+}
+
+
+
