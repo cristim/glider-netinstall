@@ -10,7 +10,7 @@ define cobbler_server($ip,
 		$root_password_hash
 		){
 
-		$pxe_kernel_location = "$os_mirror_base_url/$operatingsystemrelease/os/$architecture/images/pxeboot"
+		$pxe_kernel_location = "http://$ip/glider/$operatingsystem/$operatingsystemrelease/os/$architecture/images/pxeboot"
 
 		dhcp_server{dhcp:
 			ip => $ip,

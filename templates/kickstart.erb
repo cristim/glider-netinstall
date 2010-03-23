@@ -4,7 +4,7 @@ install
 url --url http://<%= ip %>/glider/<%= operatingsystem %>/<%= operatingsystemrelease %>/os/<%= architecture %>/
 lang en_US.UTF-8
 keyboard us
-network --device eth0 --bootproto dhcp
+network --device=eth0 --bootproto dhcp
 rootpw --iscrypted <%= root_password_hash %>
 firewall --disabled
 authconfig --enableshadow --enablemd5
@@ -12,7 +12,8 @@ selinux --disabled
 timezone --utc <%= timezone %>
 
 bootloader --location=mbr --driveorder=sda
-clearpart --linux --drives=sda
+clearpart --all --initlabel --drives=sda
+cmdline
 
 part /boot --fstype ext3 --size=100 --ondisk=sda
 part pv.2 --size=0 --grow --ondisk=sda

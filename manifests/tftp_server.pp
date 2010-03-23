@@ -9,6 +9,8 @@ define tftp_server($disable = "no",
 
 	$kickstart_file=regsubst($kickstart_url, "^.*/", "/var/www/html/glider/")
 
+	$pxe_imgs = "/var/www/html/glider/$operatingsystem/$operatingsystemrelease/os/$architecture/images/pxeboot"
+
 	package{["tftp-server", "syslinux", "xinetd", "httpd"]:
 		ensure=> installed
 	}
@@ -19,10 +21,12 @@ define tftp_server($disable = "no",
 	}
 
 
-	download_file{["vmlinuz","initrd.img"]:
-		site => $pxe_kernel_location,
-		local_path => "/tftpboot",
-		user => "root",
+	file{"/tftpboot/vmlinuz":
+		source => "$pxe_imgs/vmlinuz"
+	}
+
+	file{"/tftpboot/initrd.img":
+		source => "$pxe_imgs/initrd.img"
 	}
 
 	file{["/tftpboot","/tftpboot/pxelinux.cfg"]:
@@ -35,7 +39,7 @@ define tftp_server($disable = "no",
 
 	file{"/tftpboot/pxelinux.0":
 		source => "/usr/lib/syslinux/pxelinux.0",
-		       require => Package["syslinux"]
+		require => Package["syslinux"]
 	}
 
 	file{"/etc/xinetd.d/tftp":

@@ -1,18 +1,15 @@
-define clone_repo($repo_base_url, $local_path="/var/www/html/glider/$operatingsystem/$operatingsystemrelease/os/$architecture/$operatingsystem"){
-	get_rpms{"rpm":
-		base_url => $repo_base_url,
-		local_path => $local_path
-	}
-}
+#XXX it would be nicer to use apache's user instead of root?
 
-define get_rpms($base_url, $local_path){
-	$url="$base_url/$operatingsystemrelease/os/$architecture/$operatingsystem"
+define clone_repo($repo_base_url, $local_path="/var/www/html/glider/$operatingsystem/$operatingsystemrelease/os"){
+	
+	$url="$repo_base_url/$operatingsystemrelease/os"
 
-	download_file{"*.rpm":
+	download_file{"$architecture":
 		site => "$url",
 		local_path => "$local_path",
-		user => "root", #XXX maybe we should use apache's user?
-		notify => Exec["createrepo ."]
+		user => "root", 
+		notify => Exec["createrepo ."],
+		before => File["/tftpboot/vmlinuz","/tftpboot/initrd.img"]
 	}
 	
 	package{createrepo:
@@ -21,8 +18,8 @@ define get_rpms($base_url, $local_path){
 
 	exec{"createrepo .":
 		path => "/usr/bin",
-		cwd => $local_path,
-		creates => "$local_path/repodata",
+		cwd => "$local_path/$architecture/$operatingsystem",
+		refreshonly => true,
 		timeout => "-1",
 		user => "root",
 		require => Package["createrepo"]
