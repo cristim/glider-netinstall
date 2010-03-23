@@ -16,22 +16,25 @@ class common_base{
 	}
 }
 define download_file(
-                $site="",
-                $cwd="", 
-                $creates="",
-                $require="",
-                $user="") {
+		$site="",
+		$local_path="", 
+		$user="") {
 
-        exec { $name:
-                path => "/usr/bin",
-                command => "wget ${site}/${name}",
-                cwd => $cwd,
-                creates => "${cwd}/${name}",
-                require => $require,
-                user => $user,
-        }
-
-
+	exec { "mkdir_for_$name":
+		command => "mkdir -p $local_path",
+		path => "/bin",
+		creates => "$local_path",
+		user => $user,
+		notify => Exec[$name]
+	}
+	exec { $name:
+		path => "/usr/bin",
+		command => "rsync -a ${site}/${name} .",
+		cwd => $local_path,
+		refreshonly => true,
+		timeout => "-1",
+		user => $user
+	}
 
 }
 

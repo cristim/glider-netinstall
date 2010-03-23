@@ -21,10 +21,8 @@ define tftp_server($disable = "no",
 
 	download_file{["vmlinuz","initrd.img"]:
 		site => $pxe_kernel_location,
-		cwd => "/tftpboot",
+		local_path => "/tftpboot",
 		user => "root",
-		creates => "/tftpboot/$name",
-		require => File["/tftpboot"]
 	}
 
 	file{["/tftpboot","/tftpboot/pxelinux.cfg"]:
