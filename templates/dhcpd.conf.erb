@@ -24,10 +24,14 @@ host <%= a[0] %>{fixed-address <%= a[1] %>; hardware ethernet <%= a[2] %>;}
 f.close -%>
 
 
-<% subnet.each_with_index do |s, i| %>
-subnet <% if subnet.is_a?(Array) then %><%= subnet[i] %><% else %><%= subnet %><% end %> netmask <% if netmask.is_a?(Array) then %><%= netmask[i] %><% else %><%= netmask %><% end %>
+<% s = [subnet].flatten
+n = [netmask].flatten
+g = [gw].flatten
+
+s.each_with_index do |sn, i| %>
+subnet <%= s[i] %> netmask <%= n[i] %>
 {
-	option routers <% if gw.is_a?(Array) then %><%= gw[i] %><% else	%><%= gw %><% end -%>;
+	option routers <%= g[i] %>;
 	next-server <%= tftp %>;
 	filename "/pxelinux.0";
 }
