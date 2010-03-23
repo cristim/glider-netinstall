@@ -1,0 +1,8 @@
+TODO
+
+-replace ISC-DHCPd and TFTPd with dnsmasq (provides same features and some more)
+-replace Apache HTTPd with something tiny, like thttpd or others of his kind
+-create entries in /etc/hosts out of the nodes' list (so they can be used by dnsmasq)
+-support different distributions than the server's
+-power on nodes before installation using wakeonlan
+
