@@ -1,40 +1,16 @@
 This is a simple netinstall configurator similar to cobbler, implemented using puppet.
 
+It aims to be very easy to use and to integrate seamlessly with the puppet infrastructure 
+that you may already use. Just see site.pp.example on how you should use it.
 
-You also need a site.pp file that should look something like this:
+This software was written in 2010 by Cristian Măgherușan-Stanciu, as part of a MSc. thesis 
+project at the Technical University of Cluj-Napoca, Romania.
 
-import "glider-netinstall"
+I hereby place all of it under the public domain, so feel free to use it for any purpose.
 
-node "glider.example.com"{
+Still, I'd appreciate if you would give me any feedback, and patches are always welcome.
 
-# Cobbler server configuration
-#
-# ip - an IP address on this machine accessible to the managed hosts
-#
-# Any of the subnet, netmask and gw fields can be arrays or single values.
-# If there's an array, then we assume {subnet[i], netmask[i], gw[i], static_nodes_file[i]} 
-# is a tuple that describes the config for a single subnet. Since the netmasks can be the 
-# same on all the subnets, sometimes we don't really need this field to be an array too
-#
-# The dns field can be an array of DNS servers (unrelated to those above), or a single value
+Thanks for using it, and I hope you enjoy it as much as I enjoyed writing it.
 
-# static_nodes_file is a path to a file that contains "hostname IP MAC" tuples, one for each 
-# managed node. You must create and maintain that file yourself
-#
-# os_mirror_base_url is the URL to the root of your closest CentOS mirror
-
-cobbler_server{cobbler:
-        ip => "192.168.56.101",
-        subnet => "192.168.56.0",
-        netmask => "255.255.255.0",     
-        gw => "192.168.56.101",
-        dns => "193.226.5.151",
-        static_nodes_file => "/etc/puppet/manifests/nodes.list", 
-	os_mirror_base_url => "ftp://ftp.roedu.net/pub/mirrors/centos.org", # only FTP works so far, since wget doesn't support wildcards in HTTP mode.
-        root_password_hash =>'$1$7xtoAlN.$6ijtkhzu4JbGRBPIiB7zc0' # this will be set on the installed nodes
-}
-
-}
-
-
-
+Cristian Măgherușan-Stanciu,
+March 2010
