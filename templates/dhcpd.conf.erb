@@ -3,10 +3,22 @@
 <% main_options.each do |option| -%>
 <%= option %>;
 <% end -%>   
-option domain-name-servers <% dns.each do |ns| -%><%= ns %><% end -%>;
 
-# define an empty subnet so our DHCP server will start when no other subnets are defined
-subnet <%= ip %> netmask 255.255.255.255{}
+#subnet <% # = ip %> netmask 255.255.255.255{}
+
+
+<% s = [subnet].flatten
+n = [netmask].flatten
+g = [gw].flatten
+
+s.each_with_index do |sn, i| %>
+subnet <%= s[i] %> netmask <%= n[i] %>
+{
+	option routers <%= g[i] %>;
+	option domain-name-servers <% dns.each do |ns| -%><%= ns %><% end -%>;
+	group{
+		next-server <%= tftp %>;
+		filename "/pxelinux.0";
 
 <% f = File.new(static_nodes_file, "r")
 while (line = f.gets)
@@ -24,16 +36,8 @@ host <%= a[0] %>{fixed-address <%= a[1] %>; hardware ethernet <%= a[2] %>;}
 f.close -%>
 
 
-<% s = [subnet].flatten
-n = [netmask].flatten
-g = [gw].flatten
-
-s.each_with_index do |sn, i| %>
-subnet <%= s[i] %> netmask <%= n[i] %>
-{
-	option routers <%= g[i] %>;
-	next-server <%= tftp %>;
-	filename "/pxelinux.0";
+	}
 }
 
 <% end -%>   
+
