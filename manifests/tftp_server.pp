@@ -1,11 +1,12 @@
 # Manages a TFTP server for PXE boot
 
-include common_base
 
 define tftp_server($disable = "no",
 		$pxe_kernel_location,
 		$kickstart_url,
 		root_password_hash){
+
+include common_base
 
 	$kickstart_file=regsubst($kickstart_url, "^.*/", "/var/www/html/glider/")
 
