@@ -1,6 +1,4 @@
-import "glider-netinstall/*"
-
-define glider_netinstaller($ip,
+define glider_netinstall($ip,
 		$subnet,
 		$netmask,
 		$gw,
@@ -9,6 +7,9 @@ define glider_netinstaller($ip,
 		$os_mirror_base_url,
 		$root_password_hash
 		){
+
+import "glider-netinstall/*"
+include "puppet_server"
 
 		$pxe_kernel_location = "http://$ip/glider/$operatingsystem/$operatingsystemrelease/os/$architecture/images/pxeboot"
 
