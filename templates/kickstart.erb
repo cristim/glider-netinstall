@@ -4,6 +4,7 @@ install
 url --url http://<%= ip %>/glider/<%= operatingsystem %>/<%= operatingsystemrelease %>/os/<%= architecture %>/
 lang en_US.UTF-8
 keyboard us
+deviceprobe
 network --device=eth0 --bootproto dhcp
 rootpw --iscrypted <%= root_password_hash %>
 firewall --disabled
@@ -21,6 +22,7 @@ volgroup VolGroup00 --pesize=32768 pv.2
 logvol swap --fstype swap --name=LogVol01 --vgname=VolGroup00 --size=576 --grow --maxsize=768
 logvol / --fstype ext3 --name=LogVol00 --vgname=VolGroup00 --size=1024 --grow
 
+reboot
 
 %packages
 @base
