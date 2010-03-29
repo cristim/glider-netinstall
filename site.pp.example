@@ -1,6 +1,6 @@
-import "glider-netinstall"
 
 node "glider.example.com"{
+import "glider-netinstall"
 
 # Cobbler server configuration
 #
@@ -22,7 +22,7 @@ node "glider.example.com"{
 # The root_password_hash field contains an encrypted form of the root password that will be 
 # set on the newly-installed nodes. You can change it after install without being overwritten.
 
-	cobbler_server{cobbler:
+	glider_netinstaller{glider:
 		ip => "192.168.56.101",
 		subnet => "192.168.56.0",
 		netmask => "255.255.255.0",     
@@ -32,7 +32,6 @@ node "glider.example.com"{
 		os_mirror_base_url => "rsync://ftp.roedu.net/mirrors/centos.org", 
 		root_password_hash =>'$1$7xtoAlN.$6ijtkhzu4JbGRBPIiB7zc0' 
 	}
-
 }
 
 

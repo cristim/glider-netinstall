@@ -1,6 +1,6 @@
 import "glider-netinstall/*"
 
-define cobbler_server($ip,
+define glider_netinstaller($ip,
 		$subnet,
 		$netmask,
 		$gw,
