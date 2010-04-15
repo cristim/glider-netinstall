@@ -2,7 +2,7 @@
 
 <% main_options.each do |option| -%>
 <%= option %>;
-<% end -%>   
+<% end -%>
 
 #subnet <% # = ip %> netmask 255.255.255.255{}
 
@@ -30,12 +30,10 @@ while (line = f.gets)
 	if a.length != 3 %> The hosts file is in wrong format  
 		<% f.close
 		Process.exit
-        end %>
-host <%= a[0] %>{fixed-address <%= a[1] %>; hardware ethernet <%= a[2] %>;}
-<% end
-f.close -%>
-
-
+        end -%>
+        host <%= a[0] %>{fixed-address <%= a[1] %>; hardware ethernet <%= a[2] %>;}
+        <% end
+        f.close -%>
 	}
 }
 
