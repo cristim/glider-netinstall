@@ -6,7 +6,7 @@ define tftp_server($disable = "no",
 		$kickstart_url,
 		root_password_hash){
 
-include common_base
+include glider_common
 
 	$kickstart_file=regsubst($kickstart_url, "^.*/", "/var/www/html/glider/")
 
