@@ -13,16 +13,19 @@ include "puppet_server"
 
 		$pxe_kernel_location = "http://$ip/glider/$operatingsystem/$operatingsystemrelease/os/$architecture/images/pxeboot"
 
-		dhcp_server{dhcp:
-			ip => $ip,
-			subnet => $subnet,
-			netmask => $netmask,
-			gw => $gw,
-			dns => $dns,
-			tftp => $ip,
-			static_nodes_file => $static_nodes_file
-		}
 
+	       dnsmasq_server{dnsmasq:
+                        ip                 => $ip,
+                        subnet             => $subnet,
+                        netmask            => $netmask,
+                        dhcp_gw            => $gw,
+                        dhcp_nameservers   => $dns,
+                        dhcp_hostsfile     => $static_nodes_file,
+                        domain             => 'mosigrid.utcluj.ro',
+                        dhcp_boot          => 'pxelinux.0',
+                        tftp_ip            => $ip,
+                        tftp_root          => '/var/tftpboot/'
+                }
 		tftp_server{tftp:
 			pxe_kernel_location => "$pxe_kernel_location",
 			kickstart_url => "http://$ip/glider/glider.ks",
