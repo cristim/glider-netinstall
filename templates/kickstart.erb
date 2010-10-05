@@ -33,17 +33,23 @@ keyutils
 device-mapper-multipath
 
 %post
+<% dns.each do |ns| -%>
+echo nameserver <%= ns -%> >> /etc/resolv.conf
+<% end -%>
 
-rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-3.noarch.rpm
+rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-4.noarch.rpm
 yum -y install puppet ntp
 
 /sbin/chkconfig --level 345 puppet on
-/sbin/chkconfig --level 345 ntp on
+/sbin/chkconfig --level 345 ntpd on
 
 ntpdate pool.ntp.org
 hwclock --systohc
 
 echo <%= ip %>		puppet >> /etc/hosts
+
+# this shouldn't be done here, please some one move it to the puppet code
+rpm -i http://ftp.scientificlinux.org/linux/scientific/54/x86_64/updates/security/jdk-1.6.0_20-fcs.x86_64.rpm
 puppetd -t
 puppetd -t
 

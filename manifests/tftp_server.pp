@@ -30,7 +30,7 @@ include glider_common
 		source => "$pxe_imgs/initrd.img"
 	}
 
-	file{["/tftpboot","/tftpboot/pxelinux.cfg"]:
+	file{["/tftpboot","/tftpboot/pxelinux.cfg","/var/www/html/glider"]:
 		ensure => directory;
 	}
 
@@ -45,12 +45,11 @@ include glider_common
 
 	file{"/etc/xinetd.d/tftp":
 		content => template("glider-netinstall/xinetd_tftp.erb"),
-			notify => Service["xinetd"]
+		notify => Service["xinetd"]
 	}
 	file{"$kickstart_file":
 		content => template("glider-netinstall/kickstart.erb"),
-		require => Package["httpd"]
+		require => [Package["httpd"], File["/var/www/html/glider"]],
 	}
-
 }
 
